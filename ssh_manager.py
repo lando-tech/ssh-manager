@@ -1,4 +1,4 @@
-#! /usr/bin/env python3
+#! /usr/bin/python3
 import subprocess
 import os
 import argparse
@@ -16,6 +16,7 @@ def generate_keys(key_type: str, key_name: str, comment=None):
             key_type: accepted arguments - rsa, ed25519
             key_name: custom name of file, if left blank default name will be applied
     """
+
     creation_date = generate_timestamp()[0]
     if key_type == "rsa":
         key_name = f"id_rsa_{key_name}_{creation_date}"
@@ -256,6 +257,26 @@ def get_config_contents():
         data = config_file.read()
         print(f"__________\n\n{data}\n__________\n")
 
+def start_ssh_agent():
+    start_agent = ["ssh-agent"]
+    agent_started = subprocess.run(start_agent, stdin=subprocess.PIPE, stdout=subprocess.PIPE, text=True)
+    if agent_started.returncode != 0:
+        print(agent_started.stderr)
+    else:
+        print(agent_started.stdout)
+
+def add_keys():
+    keys = get_system_keys()
+    for i in keys:
+        key = i.split('.')[0]
+        command = ["ssh-add", f"~/.ssh/{key}"]
+        result = subprocess.run(command, stdin=subprocess.PIPE, stdout=subprocess.PIPE, text=True)
+
+        if result.returncode != 0:
+            print(result.stderr)
+        else:
+            print(result.stdout)
+    
 
 def main():
     parser = argparse.ArgumentParser(
@@ -289,7 +310,13 @@ def main():
         "-s",
         "--sync-keys",
         action="store_true",
-        help="Check the current .ssh directy and prune expiration_date.json to match current keys.",
+        help="Check the current .ssh directory and prune expiration_date.json to match current keys.",
+    )
+    parser.add_argument(
+        "-a",
+        "--add-keys",
+        action="store_true",
+        help="Add current keys to ssh agent"
     )
 
     args = parser.parse_args()
@@ -299,6 +326,8 @@ def main():
         get_config_contents()
     elif args.sync_keys:
         write_sync_changes()
+    elif args.add_keys:
+        add_keys()
     else:
         if args.name and args.key_type:
             generate_keys(key_name=args.name, key_type=args.key_type)
@@ -309,4 +338,5 @@ def main():
 
 
 if __name__ == "__main__":
+    start_ssh_agent()
     main()
