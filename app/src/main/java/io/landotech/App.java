@@ -3,45 +3,43 @@
  */
 package io.landotech;
 
-import io.landotech.generators.KeyGenerator;
+import com.sshtools.common.publickey.SshKeyPairGenerator;
+import com.sshtools.common.ssh.SshException;
+import com.sshtools.common.ssh.components.SshKeyPair;
+import com.sshtools.common.ssh.components.SshPublicKey;
+import com.sshtools.common.ssh.components.SshPrivateKey;
+import com.sshtools.common.publickey.OpenSSHPrivateKeyFile;
+import com.sshtools.common.publickey.OpenSSHPublicKeyFile;
 
-import java.util.Base64;
-import java.security.PrivateKey;
-import java.security.PublicKey;
-import java.io.FileWriter;
+/*
+ * ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIC8tpQkKOU8fBAJIVO60VWLWA5g1XLG+QV0eQQkWhl8+ aaron@devbox
+ *
+ * */
+
 import java.io.IOException;
+
 
 public class App {
 
     public static void main(String[] args) {
-        var keyGenerator = new KeyGenerator("Ed25519");
-        var keyPair = keyGenerator.getKeyPair();
-
-        var publicKey = keyPair.getPublic();
-        var privateKey = keyPair.getPrivate();
-
-        if (writeKeyPairFiles(publicKey, privateKey)) {
-            System.out.println("KeyPair has been saved");
+        SshKeyPair keyPair = generateKeyPair();
+        if (keyPair == null) {
+            System.err.println("Failed to generate ssh key pair");
+        } else {
+            SshPublicKey publicKey = keyPair.getPublicKey();
+            SshPrivateKey privateKey = keyPair.getPrivateKey();
+            System.out.println("Private key: " + privateKey.getAlgorithm());
+            System.out.println("Public key: " + publicKey.getAlgorithm());
         }
-
-        System.out.println("Public key: " + publicKey.getAlgorithm() + " Format: " + publicKey.getFormat());
-        System.out.println("Private key: " + privateKey.getAlgorithm() + " Format: " + privateKey.getFormat());
     }
 
-    public static boolean writeKeyPairFiles(PublicKey publicKey, PrivateKey privateKey) {
-	    try {
-	    	var pubKeyFile = new FileWriter("/home/aaron/.ssh/new_public_key.pub");
-	    	var privKeyFile = new FileWriter("/home/aaron/.ssh/new_private_key");
+    public static SshKeyPair generateKeyPair() {
+        try {
 
-            pubKeyFile.write("ssh-ed25519" + " " + Base64.getEncoder().encodeToString(publicKey.getEncoded()));
-            privKeyFile.write("ssh-" + privateKey.getAlgorithm().toLowerCase() + " " + Base64.getEncoder().encodeToString(privateKey.getEncoded()));
-
-            pubKeyFile.close();
-            privKeyFile.close();
-            return true;
-	    } catch (IOException e) {
-            System.out.println(e.getMessage());
-            return false;
+            return SshKeyPairGenerator.generateKeyPair(SshKeyPairGenerator.ED25519);
+        } catch (IOException | SshException io) {
+            System.out.println("Failed to generate key pair: " + io.getMessage());
         }
+        return null;
     }
 }

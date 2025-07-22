@@ -18,25 +18,24 @@ repositories {
 
 dependencies {
     // This dependency is used by the application.
+    implementation("com.sshtools:maverick-synergy-client:3.1.0")
+    implementation("com.sshtools:maverick-synergy-server:3.1.0")
     implementation(libs.guava)
 }
 
 testing {
     suites {
         // Configure the built-in test suite
-        val test by getting(JvmTestSuite::class) {
-            // Use JUnit Jupiter test framework
-            useJUnitJupiter("5.12.1")
-        }
+        val test by
+                getting(JvmTestSuite::class) {
+                    // Use JUnit Jupiter test framework
+                    useJUnitJupiter("5.12.1")
+                }
     }
 }
 
 // Apply a specific Java toolchain to ease working on different environments.
-java {
-    toolchain {
-        languageVersion = JavaLanguageVersion.of(21)
-    }
-}
+java { toolchain { languageVersion = JavaLanguageVersion.of(21) } }
 
 application {
     // Define the main class for the application.
