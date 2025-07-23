@@ -1,6 +1,9 @@
 package io.landotech.sshmanager;
 
+import javafx.event.EventHandler;
+import javafx.event.EventType;
 import javafx.fxml.FXML;
+import javafx.scene.input.InputMethodEvent;
 import javafx.stage.DirectoryChooser;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
@@ -48,6 +51,9 @@ public class KeyGenController {
 
     @FXML
     public void initialize() {
+
+        EventHandler<? super InputMethodEvent> textChanged = this.fileNameField.getOnInputMethodTextChanged();
+        this.fileNameField.addEventHandler(InputMethodEvent.INPUT_METHOD_TEXT_CHANGED, textChanged);
         this.generateButton.setOnAction(actionEvent -> {
             createSshKeys();
         });
