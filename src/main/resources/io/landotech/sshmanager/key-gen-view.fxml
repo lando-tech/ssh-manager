@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<!--<?import java.util.*?>-->
+<!--<?import javafx.scene.*?>-->
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.collections.FXCollections?>
+
+<GridPane xmlns="http://javafx.com/javafx"
+          xmlns:fx="http://javafx.com/fxml"
+          fx:controller="io.landotech.sshmanager.KeyGenController"
+          prefHeight="400.0" prefWidth="600.0">
+
+    <Label text="Key Type: " GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+    <ComboBox fx:id="keyTypeCombo" GridPane.columnIndex="1" GridPane.rowIndex="0" promptText="-- Select --">
+        <items>
+            <FXCollections fx:factory="observableArrayList">
+                <String fx:value="ssh-rsa" />
+                <String fx:value="ed25519"/>
+            </FXCollections>
+        </items>
+    </ComboBox>
+    <Label text="File name: " GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+    <TextField fx:id="fileNameField" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+
+    <Label text="Comment for Public Key: " GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+    <TextField fx:id="commentField" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+
+    <Label text="Passphrase: " GridPane.columnIndex="0" GridPane.rowIndex="3"/>
+    <PasswordField fx:id="passphraseField" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
+
+    <fx:define>
+        <ToggleGroup fx:id="directoryToggleGroup"/>
+    </fx:define>
+    <RadioButton fx:id="defaultDirectoryButton" text="Default (~/.ssh)" toggleGroup="$directoryToggleGroup" GridPane.columnIndex="1" GridPane.rowIndex="4" selected="true"/>
+    <RadioButton fx:id="customPathButton" text="Custom Path" toggleGroup="$directoryToggleGroup" GridPane.columnIndex="1" GridPane.rowIndex="5"/>
+
+    <TextField fx:id="filePathField" text="~/.ssh" GridPane.columnIndex="1" GridPane.rowIndex="6" disable="true"/>
+    <Button fx:id="directoryBrowseButton" GridPane.columnIndex="1" GridPane.rowIndex="7" text="Browse" disable="true"/>
+
+    <Button fx:id="generateButton" text="Generate" GridPane.columnIndex="1" GridPane.rowIndex="8"/>
+    <Label fx:id="infoMessage" GridPane.columnIndex="1" GridPane.rowIndex="9"/>
+
+</GridPane>
