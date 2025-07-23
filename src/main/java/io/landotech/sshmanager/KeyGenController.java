@@ -47,13 +47,8 @@ public class KeyGenController {
     @FXML
     private Label infoMessage;
 
-    private DirectoryChooser directoryChooser;
-
     @FXML
     public void initialize() {
-
-        EventHandler<? super InputMethodEvent> textChanged = this.fileNameField.getOnInputMethodTextChanged();
-        this.fileNameField.addEventHandler(InputMethodEvent.INPUT_METHOD_TEXT_CHANGED, textChanged);
         this.generateButton.setOnAction(actionEvent -> {
             createSshKeys();
         });
@@ -90,14 +85,17 @@ public class KeyGenController {
         } else if (this.directoryToggleGroup.getSelectedToggle().equals(this.defaultDirectoryButton)) {
             this.directoryBrowseButton.setDisable(true);
             this.filePathField.setDisable(true);
+            this.filePathField.setText(defaultPath.getAbsolutePath());
         }
     }
 
     public void launchDirectoryChooser() {
-        directoryChooser = new DirectoryChooser();
-        directoryChooser.setInitialDirectory(new File("C:\\Users"));
+        DirectoryChooser directoryChooser = new DirectoryChooser();
+        directoryChooser.setInitialDirectory(new File(System.getProperty("user.home")));
         customPath = directoryChooser.showDialog(new Stage());
-        filePathField.setText(customPath.getAbsolutePath());
+        if (customPath != null) {
+            filePathField.setText(customPath.getAbsolutePath());
+        }
     }
 
     public void clearTextFields() {
