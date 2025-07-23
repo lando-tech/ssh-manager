@@ -1,9 +1,7 @@
 package io.landotech.sshmanager;
 
-import javafx.event.EventHandler;
-import javafx.event.EventType;
+import javafx.beans.Observable;
 import javafx.fxml.FXML;
-import javafx.scene.input.InputMethodEvent;
 import javafx.stage.DirectoryChooser;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
@@ -30,7 +28,7 @@ public class KeyGenController {
     @FXML
     private TextField filePathField;
     private File customPath;
-    private File defaultPath = new File(System.getProperty("user.home") + "/.ssh");
+    private final File defaultPath = getSshDirectory();
 
     @FXML
     private ToggleGroup directoryToggleGroup;
@@ -49,14 +47,18 @@ public class KeyGenController {
 
     @FXML
     public void initialize() {
-        this.generateButton.setOnAction(actionEvent -> {
-            createSshKeys();
-        });
-        this.directoryToggleGroup.selectedToggleProperty().addListener(changeListener -> {
-            enableDirectoryChooserButton();
-        });
-        this.directoryBrowseButton.setOnAction(actionEvent -> {
-            launchDirectoryChooser();
+
+        filePathField.setText(defaultPath.getAbsolutePath());
+        copyTextFieldInput();
+        generateButton.setOnAction(actionEvent -> createSshKeys());
+        directoryToggleGroup.selectedToggleProperty().addListener((Observable changeListener) -> enableDirectoryChooserButton());
+        directoryBrowseButton.setOnAction(actionEvent -> launchDirectoryChooser());
+    }
+
+    public void copyTextFieldInput() {
+        String baseText = addCorrectSlash(filePathField.getText());
+        fileNameField.textProperty().addListener((obs, oldValue, newValue) -> {
+            filePathField.setText(baseText + fileNameField.getText());
         });
     }
 
@@ -79,13 +81,13 @@ public class KeyGenController {
     }
 
     public void enableDirectoryChooserButton() {
-        if (this.directoryToggleGroup.getSelectedToggle().equals(this.customPathButton)) {
-            this.directoryBrowseButton.setDisable(false);
-            this.filePathField.setDisable(false);
-        } else if (this.directoryToggleGroup.getSelectedToggle().equals(this.defaultDirectoryButton)) {
-            this.directoryBrowseButton.setDisable(true);
-            this.filePathField.setDisable(true);
-            this.filePathField.setText(defaultPath.getAbsolutePath());
+        if (directoryToggleGroup.getSelectedToggle().equals(customPathButton)) {
+            directoryBrowseButton.setDisable(false);
+            filePathField.setDisable(false);
+        } else if (directoryToggleGroup.getSelectedToggle().equals(defaultDirectoryButton)) {
+            directoryBrowseButton.setDisable(true);
+            filePathField.setDisable(true);
+            filePathField.setText(defaultPath.getAbsolutePath());
         }
     }
 
@@ -99,7 +101,28 @@ public class KeyGenController {
     }
 
     public void clearTextFields() {
-        this.commentField.clear();
-        this.passphraseField.clear();
+        commentField.clear();
+        passphraseField.clear();
+    }
+
+    public String addCorrectSlash(String filePath) {
+        String osName = System.getProperty("os.name");
+        if (osName.toLowerCase().contains("windows")) {
+            return filePath + "\\";
+        } else if (osName.toLowerCase().contains("linux") || osName.toLowerCase().contains("mac")) {
+            return filePath + "/";
+        }
+        throw new RuntimeException("Could not determine Operating System on Host Machine");
+    }
+
+    public File getSshDirectory() {
+        String osName = System.getProperty("os.name");
+        String homeDirectory = System.getProperty("user.home");
+        if (osName.toLowerCase().contains("windows")) {
+            return new File(homeDirectory + "\\.ssh");
+        } else if (osName.toLowerCase().contains("linux") || osName.toLowerCase().contains("mac")) {
+            return new File(homeDirectory + "/.ssh");
+        }
+        throw new RuntimeException("Unable to determine Operating System on Host Machine");
     }
 }

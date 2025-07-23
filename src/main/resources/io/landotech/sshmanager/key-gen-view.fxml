@@ -36,7 +36,7 @@
     <RadioButton fx:id="defaultDirectoryButton" text="Default (~/.ssh)" toggleGroup="$directoryToggleGroup" GridPane.columnIndex="1" GridPane.rowIndex="4" selected="true"/>
     <RadioButton fx:id="customPathButton" text="Custom Path" toggleGroup="$directoryToggleGroup" GridPane.columnIndex="1" GridPane.rowIndex="5"/>
 
-    <TextField fx:id="filePathField" text="~/.ssh" GridPane.columnIndex="1" GridPane.rowIndex="6" disable="true"/>
+    <TextField fx:id="filePathField" GridPane.columnIndex="1" GridPane.rowIndex="6" disable="true"/>
     <Button fx:id="directoryBrowseButton" GridPane.columnIndex="1" GridPane.rowIndex="7" text="Browse" disable="true"/>
 
     <Button fx:id="generateButton" text="Generate" GridPane.columnIndex="1" GridPane.rowIndex="8"/>
