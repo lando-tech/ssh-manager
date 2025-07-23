@@ -7,6 +7,7 @@ import com.sshtools.common.publickey.SshKeyUtils;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
 
 public class SshKeyGen {
 
@@ -36,10 +37,11 @@ public class SshKeyGen {
         return null;
     }
 
-    public boolean createSshKeyFiles(SshKeyPair keyPair, File filePath) {
+    public boolean createSshKeyFiles(SshKeyPair keyPair, Path filePath) {
         try {
-            SshKeyUtils.createPrivateKeyFile(keyPair, this.passphrase, filePath);
-            SshKeyUtils.createPublicKeyFile(keyPair.getPublicKey(), this.comment, new File(filePath + ".pub"));
+            SshKeyUtils.createPrivateKeyFile(keyPair, this.passphrase, new File(filePath.toFile().getAbsolutePath()));
+            SshKeyUtils.createPublicKeyFile(
+                    keyPair.getPublicKey(), this.comment, new File(filePath.toFile().getAbsolutePath() + ".pub"));
             return true;
         } catch (IOException e) {
             System.out.println("Unable to create Public/Private Key files: " + e.getMessage());

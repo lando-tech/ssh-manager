@@ -7,11 +7,16 @@ import javafx.scene.control.*;
 import javafx.stage.Stage;
 
 import java.io.File;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 public class KeyGenController {
 
     @FXML
     private ComboBox<String> keyTypeCombo;
+
+    @FXML
+    public ComboBox<Integer> keySizeCombo;
 
     @FXML
     private TextField commentField;
@@ -27,8 +32,8 @@ public class KeyGenController {
 
     @FXML
     private TextField filePathField;
-    private File customPath;
-    private final File defaultPath = getSshDirectory();
+    private Path customPath;
+    private final Path defaultPath = Paths.get(System.getProperty("user.home"), ".ssh");
 
     @FXML
     private ToggleGroup directoryToggleGroup;
@@ -48,18 +53,16 @@ public class KeyGenController {
     @FXML
     public void initialize() {
 
-        filePathField.setText(defaultPath.getAbsolutePath());
+        filePathField.setText(defaultPath.toString());
         copyTextFieldInput();
-        generateButton.setOnAction(actionEvent -> createSshKeys());
         directoryToggleGroup.selectedToggleProperty().addListener((Observable changeListener) -> enableDirectoryChooserButton());
         directoryBrowseButton.setOnAction(actionEvent -> launchDirectoryChooser());
-    }
-
-    public void copyTextFieldInput() {
-        String baseText = addCorrectSlash(filePathField.getText());
-        fileNameField.textProperty().addListener((obs, oldValue, newValue) -> {
-            filePathField.setText(baseText + fileNameField.getText());
+        keyTypeCombo.setOnAction(actionEvent -> {
+            if (keyTypeCombo.getSelectionModel().getSelectedItem().equals("ssh-rsa")) {
+                keySizeCombo.setDisable(false);
+            }
         });
+        generateButton.setOnAction(actionEvent -> createSshKeys());
     }
 
     public void createSshKeys() {
@@ -71,13 +74,28 @@ public class KeyGenController {
         var keyPair = keyGen.generateKeyPair(keyType);
 
         if (customPath != null) {
-            if (keyGen.createSshKeyFiles(keyPair, customPath)) {
-                infoMessage.setText("SSH keys generated @ " + customPath.getName());
+            Path finalPath = Paths.get(customPath.toString(), fileNameField.getText());
+            if (keyGen.createSshKeyFiles(keyPair, finalPath)) {
+                infoMessage.setText("SSH keys generated @ " + finalPath);
                 clearTextFields();
             } else {
                 infoMessage.setText("Failed to create SSH keys!");
             }
+        } else {
+            Path finalPath = Paths.get(defaultPath.toString(), fileNameField.getText());
+            if (keyGen.createSshKeyFiles(keyPair, finalPath)) {
+                infoMessage.setText("SSH keys generated @ " + finalPath);
+            } else {
+                infoMessage.setText("Failed to create SSH keys!");
+            }
         }
+    }
+
+    public void copyTextFieldInput() {
+        String baseText = filePathField.getText();
+        fileNameField.textProperty().addListener((obs, oldValue, newValue) -> {
+            filePathField.setText(baseText + File.separator + fileNameField.getText());
+        });
     }
 
     public void enableDirectoryChooserButton() {
@@ -87,16 +105,21 @@ public class KeyGenController {
         } else if (directoryToggleGroup.getSelectedToggle().equals(defaultDirectoryButton)) {
             directoryBrowseButton.setDisable(true);
             filePathField.setDisable(true);
-            filePathField.setText(defaultPath.getAbsolutePath());
+            if (!filePathField.getText().isEmpty()) {
+                filePathField.setText(defaultPath + File.separator + fileNameField.getText());
+            } else {
+                filePathField.setText(defaultPath.toString());
+            }
         }
     }
 
     public void launchDirectoryChooser() {
         DirectoryChooser directoryChooser = new DirectoryChooser();
         directoryChooser.setInitialDirectory(new File(System.getProperty("user.home")));
-        customPath = directoryChooser.showDialog(new Stage());
-        if (customPath != null) {
-            filePathField.setText(customPath.getAbsolutePath());
+        File customFilePath = directoryChooser.showDialog(new Stage());
+        if (customFilePath != null) {
+            customPath = customFilePath.toPath();
+            filePathField.setText(customPath.toString() + File.separator + fileNameField.getText());
         }
     }
 
@@ -105,24 +128,4 @@ public class KeyGenController {
         passphraseField.clear();
     }
 
-    public String addCorrectSlash(String filePath) {
-        String osName = System.getProperty("os.name");
-        if (osName.toLowerCase().contains("windows")) {
-            return filePath + "\\";
-        } else if (osName.toLowerCase().contains("linux") || osName.toLowerCase().contains("mac")) {
-            return filePath + "/";
-        }
-        throw new RuntimeException("Could not determine Operating System on Host Machine");
-    }
-
-    public File getSshDirectory() {
-        String osName = System.getProperty("os.name");
-        String homeDirectory = System.getProperty("user.home");
-        if (osName.toLowerCase().contains("windows")) {
-            return new File(homeDirectory + "\\.ssh");
-        } else if (osName.toLowerCase().contains("linux") || osName.toLowerCase().contains("mac")) {
-            return new File(homeDirectory + "/.ssh");
-        }
-        throw new RuntimeException("Unable to determine Operating System on Host Machine");
-    }
 }
