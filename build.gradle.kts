@@ -27,7 +27,7 @@ tasks.withType<JavaCompile> {
 
 application {
     mainModule.set("io.landotech.sshmanager")
-    mainClass.set("io.landotech.sshmanager.HelloApplication")
+    mainClass.set("io.landotech.sshmanager.Main")
 }
 
 javafx {

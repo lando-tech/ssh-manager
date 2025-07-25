@@ -8,11 +8,15 @@
 
 <GridPane xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
-      fx:controller="io.landotech.sshmanager.controllers.FileTextFieldsController">
+      fx:controller="io.landotech.sshmanager.controllers.FilePathFormController">
     <Label text="File name: " GridPane.columnIndex="0" GridPane.rowIndex="0"/>
     <TextField fx:id="fileNameField" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
-    <Label text="Default Path: " GridPane.columnIndex="0" GridPane.rowIndex="1"/>
-    <TextField fx:id="defaultDirectoryField" GridPane.columnIndex="2" GridPane.rowIndex="1"/>
-    <Button text="Browse" fx:id="directoryChooserButton" disable="true" GridPane.columnIndex="2" GridPane.rowIndex="1"/>
+    <Label text="Directory: " GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+    <TextField fx:id="directoryField" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+    <Button text="Browse" fx:id="directoryChooserButton" onAction="#launchDirectoryChooser" GridPane.columnIndex="2" GridPane.rowIndex="1"/>
+    <HBox GridPane.columnIndex="0" GridPane.rowIndex="2">
+        <Button fx:id="previousButton" text="Back" onAction="#handleNextButton"/>
+        <Button fx:id="nextButton" text="Next"/>
+    </HBox>
 
 </GridPane>

@@ -5,6 +5,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.DirectoryChooser;
 
+import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
@@ -29,14 +30,13 @@ public class FilePathFormController {
     @FXML
     private Button previousButton;
 
+    private Path filePath;
+
 
     @FXML
     protected void initialize() {
         directoryField.setText(defaultPath.toString());
-        nextButton.disableProperty().bind(
-            directoryField.textProperty().isEmpty()
-            .or(fileNameField.textProperty().isEmpty())
-        );
+        setDisablePropertyNextButton(); 
     }
 
     @FXML
@@ -48,5 +48,25 @@ public class FilePathFormController {
         if (userDirectory != null) {
             directoryField.setText(userDirectory.getAbsolutePath());
         }
+    }
+
+    @FXML
+    protected void handleNextButton() {
+        setFilePath();
+    }
+
+    private void setDisablePropertyNextButton() {
+        nextButton.disableProperty().bind(
+            directoryField.textProperty().isEmpty()
+            .or(fileNameField.textProperty().isEmpty())
+        );
+    }
+
+    private void setFilePath() {
+        filePath = Paths.get(directoryField.getText() + File.separator + fileNameField.getText()); 
+    }
+
+    private Path getFilePath() {
+        return this.filePath;
     }
 }
