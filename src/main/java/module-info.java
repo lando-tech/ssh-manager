@@ -12,4 +12,8 @@ module io.landotech.sshmanager {
 
     opens io.landotech.sshmanager to javafx.fxml;
     exports io.landotech.sshmanager;
+    exports io.landotech.sshmanager.controllers;
+    opens io.landotech.sshmanager.controllers to javafx.fxml;
+    exports io.landotech.sshmanager.sshutils;
+    opens io.landotech.sshmanager.sshutils to javafx.fxml;
 }

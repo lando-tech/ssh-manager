@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<GridPane xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="io.landotech.sshmanager.controllers.FileTextFieldsController">
+    <Label text="File name: " GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+    <TextField fx:id="fileNameField" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+    <fx:define>
+        <ToggleGroup fx:id="directoryToggleGroup"/>
+    </fx:define>
+    <RadioButton fx:id="defaultDirectoryRadioButton" text="Default: " toggleGroup="$directoryToggleGroup" GridPane.columnIndex="1" GridPane.rowIndex="1" selected="true"/>
+    <RadioButton fx:id="customDirectoryRadioButton" text="Custom Path" toggleGroup="$directoryToggleGroup" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+    <Label text="Default Path: " GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+    <TextField fx:id="defaultDirectoryField" GridPane.columnIndex="2" GridPane.rowIndex="1"/>
+    <Button text="Browse" fx:id="directoryChooserButton" disable="true" GridPane.columnIndex="2" GridPane.rowIndex="3"/>
+
+</GridPane>

@@ -1,4 +1,4 @@
-package io.landotech.sshmanager;
+package io.landotech.sshmanager.sshutils;
 
 import com.sshtools.common.publickey.SshKeyPairGenerator;
 import com.sshtools.common.ssh.SshException;

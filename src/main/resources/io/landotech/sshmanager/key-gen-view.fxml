@@ -9,48 +9,50 @@
 
 <GridPane xmlns="http://javafx.com/javafx"
           xmlns:fx="http://javafx.com/fxml"
-          fx:controller="io.landotech.sshmanager.KeyGenController"
+          fx:controller="io.landotech.sshmanager.controllers.KeyGenController"
           prefHeight="400.0" prefWidth="600.0">
+        <fx:include source="combobox.fxml" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+        <fx:include source="file-text-fields.fxml" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+        <fx:include source="key-metadata.fxml" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+<!--    <Label text="Key Type: " GridPane.columnIndex="0" GridPane.rowIndex="0"/>-->
+<!--    <ComboBox fx:id="keyTypeCombo" GridPane.columnIndex="1" GridPane.rowIndex="0" >-->
+<!--        <items>-->
+<!--            <FXCollections fx:factory="observableArrayList">-->
+<!--                <String fx:value="ssh-rsa" />-->
+<!--                <String fx:value="ed25519"/>-->
+<!--            </FXCollections>-->
+<!--        </items>-->
+<!--    </ComboBox>-->
 
-    <Label text="Key Type: " GridPane.columnIndex="0" GridPane.rowIndex="0"/>
-    <ComboBox fx:id="keyTypeCombo" GridPane.columnIndex="1" GridPane.rowIndex="0" promptText="-- Select --">
-        <items>
-            <FXCollections fx:factory="observableArrayList">
-                <String fx:value="ssh-rsa" />
-                <String fx:value="ed25519"/>
-            </FXCollections>
-        </items>
-    </ComboBox>
+<!--    <Label text="Key Size: " GridPane.columnIndex="0" GridPane.rowIndex="1"/>-->
+<!--    <ComboBox fx:id="keySizeCombo" GridPane.columnIndex="1" GridPane.rowIndex="1" disable="true">-->
+<!--        <items>-->
+<!--            <FXCollections fx:factory="observableArrayList">-->
+<!--                <Integer fx:value="2056"/>-->
+<!--                <Integer fx:value="4096"/>-->
+<!--            </FXCollections>-->
+<!--        </items>-->
+<!--    </ComboBox>-->
 
-    <Label text="Key Size: " GridPane.columnIndex="0" GridPane.rowIndex="1"/>
-    <ComboBox fx:id="keySizeCombo" GridPane.columnIndex="1" GridPane.rowIndex="1" promptText="-- Select --" disable="true">
-        <items>
-            <FXCollections fx:factory="observableArrayList">
-                <Integer fx:value="2056"/>
-                <Integer fx:value="4096"/>
-            </FXCollections>
-        </items>
-    </ComboBox>
+<!--    <Label text="File name: " GridPane.columnIndex="0" GridPane.rowIndex="2"/>-->
+<!--    <TextField fx:id="fileNameField" GridPane.columnIndex="1" GridPane.rowIndex="2"/>-->
 
-    <Label text="File name: " GridPane.columnIndex="0" GridPane.rowIndex="2"/>
-    <TextField fx:id="fileNameField" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+<!--    <Label text="Comment for Public Key: " GridPane.columnIndex="0" GridPane.rowIndex="3"/>-->
+<!--    <TextField fx:id="commentField" GridPane.columnIndex="1" GridPane.rowIndex="3"/>-->
 
-    <Label text="Comment for Public Key: " GridPane.columnIndex="0" GridPane.rowIndex="3"/>
-    <TextField fx:id="commentField" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
+<!--    <Label text="Passphrase: " GridPane.columnIndex="0" GridPane.rowIndex="4"/>-->
+<!--    <PasswordField fx:id="passphraseField" GridPane.columnIndex="1" GridPane.rowIndex="4"/>-->
 
-    <Label text="Passphrase: " GridPane.columnIndex="0" GridPane.rowIndex="4"/>
-    <PasswordField fx:id="passphraseField" GridPane.columnIndex="1" GridPane.rowIndex="4"/>
+<!--    <fx:define>-->
+<!--        <ToggleGroup fx:id="directoryToggleGroup"/>-->
+<!--    </fx:define>-->
+<!--    <RadioButton fx:id="defaultDirectoryRadioButton" text="Default (~/.ssh)" toggleGroup="$directoryToggleGroup" GridPane.columnIndex="1" GridPane.rowIndex="5" selected="true"/>-->
+<!--    <RadioButton fx:id="customPathRadioButton" text="Custom Path" toggleGroup="$directoryToggleGroup" GridPane.columnIndex="1" GridPane.rowIndex="6"/>-->
 
-    <fx:define>
-        <ToggleGroup fx:id="directoryToggleGroup"/>
-    </fx:define>
-    <RadioButton fx:id="defaultDirectoryButton" text="Default (~/.ssh)" toggleGroup="$directoryToggleGroup" GridPane.columnIndex="1" GridPane.rowIndex="5" selected="true"/>
-    <RadioButton fx:id="customPathButton" text="Custom Path" toggleGroup="$directoryToggleGroup" GridPane.columnIndex="1" GridPane.rowIndex="6"/>
+<!--    <TextField fx:id="filePathField" GridPane.columnIndex="1" GridPane.rowIndex="7" disable="true"/>-->
+<!--    <Button fx:id="directoryChooserButton" GridPane.columnIndex="1" GridPane.rowIndex="8" text="Browse" disable="true"/>-->
 
-    <TextField fx:id="filePathField" GridPane.columnIndex="1" GridPane.rowIndex="7" disable="true"/>
-    <Button fx:id="directoryBrowseButton" GridPane.columnIndex="1" GridPane.rowIndex="8" text="Browse" disable="true"/>
-
-    <Button fx:id="generateButton" text="Generate" GridPane.columnIndex="1" GridPane.rowIndex="9"/>
-    <Label fx:id="infoMessage" GridPane.columnIndex="1" GridPane.rowIndex="10"/>
+<!--    <Button fx:id="generateSshKeysButton" text="Generate" GridPane.columnIndex="1" GridPane.rowIndex="9"/>-->
+<!--    <Label fx:id="infoMessage" GridPane.columnIndex="1" GridPane.rowIndex="10"/>-->
 
 </GridPane>
