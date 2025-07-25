@@ -37,15 +37,13 @@ public class SshKeyGen {
         return null;
     }
 
-    public boolean createSshKeyFiles(SshKeyPair keyPair, Path filePath) {
+    public void createSshKeyFiles(SshKeyPair keyPair, Path filePath) {
         try {
             SshKeyUtils.createPrivateKeyFile(keyPair, this.passphrase, new File(filePath.toFile().getAbsolutePath()));
             SshKeyUtils.createPublicKeyFile(
                     keyPair.getPublicKey(), this.comment, new File(filePath.toFile().getAbsolutePath() + ".pub"));
-            return true;
         } catch (IOException e) {
             System.out.println("Unable to create Public/Private Key files: " + e.getMessage());
-            return false;
         }
     }
 }
