@@ -11,10 +11,12 @@
             fx:controller="io.landotech.sshmanager.controllers.ComboBoxController">
     <HBox>
         <Label text="Key Type: " />
+        <Label fx:id="hiddenTypeLabel"/>
         <ComboBox fx:id="keyTypeComboBox" />
     </HBox>
     <HBox>
         <Label text="Key Size: "/>
+        <Label fx:id="hiddenSizeLabel"/>
         <ComboBox fx:id="keySizeComboBox" disable="true"/>
     </HBox>
 </VBox>

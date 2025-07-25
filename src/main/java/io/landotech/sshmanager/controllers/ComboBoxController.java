@@ -4,6 +4,7 @@ import com.sshtools.common.publickey.SshKeyPairGenerator;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 
 public class ComboBoxController {
 
@@ -15,15 +16,23 @@ public class ComboBoxController {
     public static final int defaultKeySize= 4096;
 
     @FXML
-    private ComboBox<String> keyTypeComboBox;
+    private ComboBox<String> keyTypeComboBox = new ComboBox<>();
 
     @FXML
-    private ComboBox<Integer> keySizeComboBox;
+    private ComboBox<Integer> keySizeComboBox = new ComboBox<>();
+
+    @FXML
+    private Label hiddenTypeLabel = new Label();
+
+    @FXML
+    private Label hiddenSizeLabel = new Label();
 
     @FXML
     public void initialize() {
         initializeKeyTypes();
         initializeKeySizes();
+        hideTypeLabel();
+        hideSizeLabel();
         initializeActionEvent();
     }
 
@@ -40,6 +49,38 @@ public class ComboBoxController {
                 mediumKeySize,
                 defaultKeySize
         ));
+    }
+
+    public void hideTypeLabel() {
+        hiddenTypeLabel.setVisible(false);
+    }
+
+    public void unhideTypeLabel() {
+        hiddenTypeLabel.setVisible(true);
+    }
+
+    public void setTypeWarning(String warning) {
+        hiddenTypeLabel.setText(warning);
+    }
+
+    public void hideSizeLabel() {
+        hiddenSizeLabel.setVisible(false);
+    }
+
+    public  void unhideSizeLabel() {
+        hiddenSizeLabel.setVisible(true);
+    }
+
+    public void setSizeWarning(String warning) {
+        hiddenSizeLabel.setText(warning);
+    }
+
+    public String getKeyType() {
+        return keyTypeComboBox.getSelectionModel().getSelectedItem();
+    }
+
+    public Integer getKeySize() {
+        return keySizeComboBox.getSelectionModel().getSelectedItem();
     }
 
     public void initializeActionEvent() {

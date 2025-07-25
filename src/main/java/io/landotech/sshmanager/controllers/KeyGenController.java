@@ -1,31 +1,82 @@
 package io.landotech.sshmanager.controllers;
 
 
+import com.sshtools.common.publickey.SshKeyPairGenerator;
+import com.sshtools.common.ssh.components.SshKeyPair;
+import io.landotech.sshmanager.sshutils.SshKeyGen;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 
 public class KeyGenController {
 
     @FXML
-    ComboBoxController comboBoxController;
+    ComboBoxController comboBoxController = new ComboBoxController();
     @FXML
     FileTextFieldsController fileTextFieldsController;
     @FXML
     KeyMetaDataController keyMetaDataController;
+    @FXML
+    private Button generateSshKeysButton;
+
+    private String keyType;
+    private Integer keySize;
+
+    private SshKeyGen sshKeyGen;
+
+    @FXML
+    public void initialize() {
+        generateSshKeysButton.setOnAction(event -> {
+           createSshKeys();
+        });
+    }
+
+    public void createSshKeys() {
+        if (!verifyKeyType() || !verifyKeySize()) {
+            return;
+        }
+        SshKeyPair keyPair = getSshKeyPair();
+        var filePath = fileTextFieldsController.getPath();
+        this.sshKeyGen.createSshKeyFiles(keyPair, filePath);
+    }
+
+    public SshKeyPair getSshKeyPair() {
+        var commentText = keyMetaDataController.getComment();
+        var passphraseText = keyMetaDataController.getPassphrase();
+        this.sshKeyGen = new SshKeyGen(passphraseText, commentText);
+        SshKeyPair keyPair;
+        if (keyType.equals(SshKeyPairGenerator.SSH2_RSA)) {
+            keyPair = this.sshKeyGen.generateKeyPair(keyType, keySize);
+        } else {
+            keyPair = this.sshKeyGen.generateKeyPair(keyType);
+        }
+        return keyPair;
+    }
+
+    public boolean verifyKeyType() {
+        this.keyType = comboBoxController.getKeyType();
+        if (this.keyType == null) {
+            comboBoxController.unhideTypeLabel();
+            comboBoxController.setTypeWarning("Key type is required.");
+            return false;
+        } else {
+            comboBoxController.hideTypeLabel();
+            return true;
+        }
+    }
+
+    public boolean verifyKeySize() {
+        this.keySize = comboBoxController.getKeySize();
+        if (this.keyType.equals(SshKeyPairGenerator.SSH2_RSA) && this.keySize == null) {
+            comboBoxController.unhideSizeLabel();
+            comboBoxController.setSizeWarning("Key size is required when generating ssh-rsa keys.");
+            return false;
+        } else {
+            comboBoxController.hideSizeLabel();
+            return true;
+        }
+    }
 }
 
-//import com.sshtools.common.ssh.components.SshKeyPair;
-//import io.landotech.sshmanager.sshutils.SshKeyGen;
-//import javafx.beans.Observable;
-//import javafx.fxml.FXML;
-//import javafx.stage.DirectoryChooser;
-//import javafx.scene.control.*;
-//import javafx.stage.Stage;
-//
-//import java.io.File;
-//import java.nio.file.Path;
-//import java.nio.file.Paths;
-//import java.util.Objects;
-//
 //public class KeyGenController {
 //
 //    // Combo box to specify key-type: ssh-rsa, ed25519
@@ -113,18 +164,7 @@ public class KeyGenController {
 //        }
 //    }
 //
-//    public void createSshKeys() {
-//        var keyType = keyTypeCombo.getSelectionModel().getSelectedItem();
-//        var commentText = commentField.getText();
-//        var passphraseText = passphraseField.getText();
-//
-//        var keyGen = new SshKeyGen(passphraseText, commentText);
-//        var keyPair = keyGen.generateKeyPair(keyType);
-//
-//        Path finalPath;
-//        finalPath = Paths.get(Objects.requireNonNullElse(customPath, defaultPath).toString(), fileNameField.getText());
-//        saveSshKeyFiles(finalPath, keyPair, keyGen);
-//    }
+
 //
 //    // <- End ActionEvents
 //
