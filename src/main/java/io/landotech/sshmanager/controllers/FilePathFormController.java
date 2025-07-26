@@ -34,7 +34,7 @@ public class FilePathFormController {
 
     // Navigation constants
     private final NavigationController navigationController = new NavigationController();
-    private final String nextResource = "key-type-form.fxml";
+    private final String nextResource = "/io/landotech/sshmanager/key-type-form.fxml";
     private final String nextResourceTitle = "Choose Key Type";
 
     @FXML
@@ -61,8 +61,9 @@ public class FilePathFormController {
     }
 
     private void setNextButtonAction() {
+        setFilePath();
         nextButton.setOnAction(event -> {
-            navigationController.handleNextButtonAction(
+            navigationController.navigate(
                     nextResource,
                     (Stage) nextButton.getScene().getWindow(),
                     nextResourceTitle

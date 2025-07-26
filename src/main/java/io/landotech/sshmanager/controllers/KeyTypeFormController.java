@@ -5,7 +5,9 @@ import com.sshtools.common.publickey.SshKeyPairGenerator;
 import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
 import javafx.collections.FXCollections;
+import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.stage.Stage;
 
 public class KeyTypeFormController {
 
@@ -16,6 +18,16 @@ public class KeyTypeFormController {
     private ComboBox<Integer> keySizeComboBox;
 
     @FXML
+    private Button nextButton;
+
+    @FXML
+    private Button backButton;
+
+    private final NavigationController navigationController = new NavigationController();
+    private final String nextResource = "/io/landotech/sshmanager/next.fxml";
+    private final String prevResource = "/io/landotech/sshmanager/file-path-form.fxml";
+
+    @FXML
     protected void initialize() {
         keySizeComboBox.disableProperty().bind(Bindings.createBooleanBinding(() ->
                 SshKeyPairGenerator.ED25519.equals(keyTypeComboBox.getSelectionModel().getSelectedItem()),
@@ -23,6 +35,21 @@ public class KeyTypeFormController {
         ));
         setupKeyTypeComboBox();
         setupKeySizeComboBox();
+        handleBackButton();
+    }
+
+    private void handleNextButton() {
+
+    }
+
+    private void handleBackButton() {
+        backButton.setOnAction(event -> {
+            navigationController.navigate(
+                    prevResource,
+                    (Stage) backButton.getScene().getWindow(),
+                    "Select File Path"
+            );
+        });
     }
 
     private void setupKeyTypeComboBox() {

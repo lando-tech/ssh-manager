@@ -9,13 +9,16 @@
 <?import javafx.geometry.Insets?>
 <VBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
-      fx:controller="io.landotech.sshmanager.controllers.KeyTypeFormController"
-      prefHeight="400.0" prefWidth="600.0">
+      fx:controller="io.landotech.sshmanager.controllers.KeyTypeFormController">
     <padding>
-        <Insets top="20" bottom="20" left="20" right="20"/>
+        <Insets top="20" bottom="20" left="20" right="20" />
     </padding>
     <Label text="Key Type: "/>
-    <ComboBox fx:id="keyTypeComboBox"/>
+    <ComboBox fx:id="keyTypeComboBox" />
     <Label text="Key Size: "/>
-    <ComboBox fx:id="keySizeComboBox"/>
+    <ComboBox fx:id="keySizeComboBox" />
+    <HBox>
+        <Button fx:id="backButton" text="Back"/>
+        <Button fx:id="nextButton" text="Next"/>
+    </HBox>
 </VBox>
