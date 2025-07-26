@@ -9,6 +9,7 @@ module io.landotech.sshmanager {
     requires org.kordamp.bootstrapfx.core;
     requires eu.hansolo.tilesfx;
     requires com.sshtools.maverick.base;
+    requires com.sshtools.synergy.client;
 
     opens io.landotech.sshmanager to javafx.fxml;
     exports io.landotech.sshmanager;

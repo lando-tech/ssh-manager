@@ -4,6 +4,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.DirectoryChooser;
+import javafx.stage.Stage;
 
 import java.io.File;
 import java.nio.file.Path;
@@ -12,7 +13,6 @@ import java.nio.file.Paths;
 public class FilePathFormController {
 
     private static final Path defaultPath = Paths.get(System.getProperty("user.home"), ".ssh");
-
     private static final Path userHome = Paths.get(System.getProperty("user.home"));
 
     @FXML
@@ -32,11 +32,16 @@ public class FilePathFormController {
 
     private Path filePath;
 
+    // Navigation constants
+    private final NavigationController navigationController = new NavigationController();
+    private final String nextResource = "key-type-form.fxml";
+    private final String nextResourceTitle = "Choose Key Type";
 
     @FXML
     protected void initialize() {
         directoryField.setText(defaultPath.toString());
-        setDisablePropertyNextButton(); 
+        setDisablePropertyNextButton();
+        setNextButtonAction();
     }
 
     @FXML
@@ -55,9 +60,14 @@ public class FilePathFormController {
         setFilePath();
     }
 
-    @FXML
-    protected void handleBackButton() {
-
+    private void setNextButtonAction() {
+        nextButton.setOnAction(event -> {
+            navigationController.handleNextButtonAction(
+                    nextResource,
+                    (Stage) nextButton.getScene().getWindow(),
+                    nextResourceTitle
+            );
+        });
     }
 
     private void setDisablePropertyNextButton() {

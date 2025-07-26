@@ -5,10 +5,14 @@
 <?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
 
 <GridPane xmlns="http://javafx.com/javafx"
-      xmlns:fx="http://javafx.com/fxml"
-      fx:controller="io.landotech.sshmanager.controllers.FilePathFormController">
+          xmlns:fx="http://javafx.com/fxml"
+          fx:controller="io.landotech.sshmanager.controllers.FilePathFormController">
+    <padding>
+        <Insets top="20" bottom="20" left="20" right="20"/>
+    </padding>
     <Label text="File name: " GridPane.columnIndex="0" GridPane.rowIndex="0"/>
     <TextField fx:id="fileNameField" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
     <Label text="Directory: " GridPane.columnIndex="0" GridPane.rowIndex="1"/>
@@ -18,5 +22,4 @@
         <Button fx:id="previousButton" text="Back" onAction="#handleNextButton"/>
         <Button fx:id="nextButton" text="Next"/>
     </HBox>
-
 </GridPane>

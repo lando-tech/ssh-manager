@@ -6,9 +6,16 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="io.landotech.sshmanager.controllers.KeyTypeFormController"
-            prefHeight="400.0" prefWidth="600.0">
-
-</AnchorPane>
+<?import javafx.geometry.Insets?>
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="io.landotech.sshmanager.controllers.KeyTypeFormController"
+      prefHeight="400.0" prefWidth="600.0">
+    <padding>
+        <Insets top="20" bottom="20" left="20" right="20"/>
+    </padding>
+    <Label text="Key Type: "/>
+    <ComboBox fx:id="keyTypeComboBox"/>
+    <Label text="Key Size: "/>
+    <ComboBox fx:id="keySizeComboBox"/>
+</VBox>
